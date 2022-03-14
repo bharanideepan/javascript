@@ -1,3 +1,4 @@
+import "./styles/styles.css";
 import Grid from "./Grid.js";
 import Tile from "./Tile.js";
 import Storage from "./Storage.js";
