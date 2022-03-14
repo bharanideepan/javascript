@@ -7,12 +7,39 @@
 
 body {
   background-color: hsl(182, 25%, 50%);
+  /* height: 90vh; */
+  margin: 0;
+  font-size: 7.5vmin;
+}
+
+button {
+  background-color: hsl(200, 25%, 20%);
+  padding: 1vmin 2vmin;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  border: 1px solid hsl(500, 25%, 80%);
+}
+
+.header {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  padding: 2.5vmin;
+}
+
+.title {
   margin: 0;
-  font-size: 7.5vmin;
+  color: white;
+  padding-left: 5vmin;
+  padding-right: 5vmin;
+  font-size: 4vmin;
+}
+
+#game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #game-board {

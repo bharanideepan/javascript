@@ -10,15 +10,21 @@ export default class Tile {
     this.value = value;
   }
   get value() {
-    return this.#value
+    return this.#value;
   }
   set value(value) {
-    this.#value = value
-    this.#tileElement.textContent = value
-    const power = Math.log2(value)
-    const backgroundLightness = 100 - power * 9
-    this.#tileElement.style.setProperty('--background-lightness', `${backgroundLightness}%`)
-    this.#tileElement.style.setProperty('--text-lightness', `${backgroundLightness <= 50 ? 90 : 10}%`)
+    this.#value = value;
+    this.#tileElement.textContent = value;
+    const power = Math.log2(value);
+    const backgroundLightness = 100 - power * 9;
+    this.#tileElement.style.setProperty(
+      "--background-lightness",
+      `${backgroundLightness}%`
+    );
+    this.#tileElement.style.setProperty(
+      "--text-lightness",
+      `${backgroundLightness <= 50 ? 90 : 10}%`
+    );
   }
   get x() {
     return this.#x;
@@ -38,14 +44,14 @@ export default class Tile {
     this.#tileElement.remove();
   }
   waitForTransition(animation = false) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.#tileElement.addEventListener(
         animation ? "animationend" : "transitionend",
         resolve,
         {
           once: true,
         }
-      )
-    })
+      );
+    });
   }
 }

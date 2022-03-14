@@ -16,30 +16,51 @@ export default class Grid {
   get cellsByColumn() {
     return this.#cells.reduce((cellGrid, cell) => {
       cellGrid[cell.x] = cellGrid[cell.x] || [];
-      cellGrid[cell.x][cell.y] = cell
-      return cellGrid
-    }, [])
+      cellGrid[cell.x][cell.y] = cell;
+      return cellGrid;
+    }, []);
   }
 
   get cellsByRow() {
     return this.#cells.reduce((cellGrid, cell) => {
       cellGrid[cell.y] = cellGrid[cell.y] || [];
-      cellGrid[cell.y][cell.x] = cell
-      return cellGrid
-    }, [])
+      cellGrid[cell.y][cell.x] = cell;
+      return cellGrid;
+    }, []);
   }
 
   get cells() {
-    return this.#cells
+    return this.#cells;
   }
 
   get #emptyCells() {
     return this.#cells.filter((cell) => cell.tile == null);
   }
 
+  get tileInfo() {
+    return this.#cells
+      .filter((cell) => cell.tile != null)
+      .map((cell) => ({
+        x: cell.tile.x,
+        y: cell.tile.y,
+        value: cell.tile.value,
+      }));
+  }
+
+  resetCells() {
+    this.#cells.forEach((cell) => {
+      cell.tile?.remove();
+      cell.tile = null;
+    });
+  }
+
   randomEmptyCell() {
     const randomIndex = Math.floor(Math.random() * this.#emptyCells.length);
     return this.#emptyCells[randomIndex];
+  }
+
+  cellByPosition(x, y) {
+    return this.#cells.find((cell) => cell.x == x && cell.y == y);
   }
 }
 
@@ -64,28 +85,32 @@ class Cell {
     return this.#tile;
   }
   set tile(value) {
-    this.#tile = value
-    if(value == null) return
-    this.#tile.x = this.#x
-    this.#tile.y = this.#y
+    this.#tile = value;
+    if (value == null) return;
+    this.#tile.x = this.#x;
+    this.#tile.y = this.#y;
   }
   get mergeTile() {
     return this.#mergeTile;
   }
   set mergeTile(value) {
-    this.#mergeTile = value
-    if(value == null) return
-    this.#mergeTile.x = this.#x
-    this.#mergeTile.y = this.#y
+    this.#mergeTile = value;
+    if (value == null) return;
+    this.#mergeTile.x = this.#x;
+    this.#mergeTile.y = this.#y;
   }
   canAccept(tile) {
-    return (this.tile == null) || (this.mergeTile == null && this.tile.value === tile.value)
+    return (
+      this.tile == null ||
+      (this.mergeTile == null && this.tile.value === tile.value)
+    );
   }
   mergeTiles() {
-    if(this.tile == null || this.mergeTile == null) return
-    this.tile.value = parseInt(this.tile.value) + parseInt(this.mergeTile.value)
-    this.mergeTile.remove()
-    this.mergeTile = null
+    if (this.tile == null || this.mergeTile == null) return;
+    this.tile.value =
+      parseInt(this.tile.value) + parseInt(this.mergeTile.value);
+    this.mergeTile.remove();
+    this.mergeTile = null;
   }
 }
 
