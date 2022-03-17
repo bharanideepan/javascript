@@ -12,8 +12,8 @@ interface Settings {
 const DEFAULT_SETTINGS: Settings = {
   theme: THEMES.LIGHT,
   gridSize: 4,
-  cellSize: 20,
-  cellGap: 2,
+  cellSize: 15,
+  cellGap: 1.5,
 };
 
 const restoreSettings = (): Settings => {

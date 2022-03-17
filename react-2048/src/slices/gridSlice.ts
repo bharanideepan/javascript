@@ -8,12 +8,12 @@ import {
 } from "../utils/Util";
 
 const KEY = 'gameData';
-
+const DEFAULT = {
+  cells: [],
+  tiles: []
+}
 const resumeGame = (): Grid => {
-  let grid: Grid = {
-    cells: [],
-    tiles: []
-  };
+  let grid: Grid = DEFAULT;
   try {
     const storedData = window.localStorage.getItem(KEY);
     if (storedData) {
@@ -37,6 +37,9 @@ const slice = createSlice({
   name: "grid",
   initialState,
   reducers: {
+    restart(state) {
+      state.grid = DEFAULT;
+    },
     createCells(state, action) {
       const size = action.payload;
       const cells: Cell[] = [];

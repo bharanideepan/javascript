@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   cell: {
-    backgroundColor: "hsl(200, 25%, 50%)",
+    backgroundColor: theme.palette.secondary.main,
     borderRadius: "1vmin",
   },
 }));

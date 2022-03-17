@@ -43,8 +43,8 @@ const TileView: React.FC<{ x: number; y: number; value: number }> = ({
         left: `${
           x * (settings.cellSize + settings.cellGap) + settings.cellGap
         }vmin`,
-        backgroundColor: `hsl(182, 50%, ${lightness}%`,
-        color: `hsl(182, 25%, ${lightness <= 50 ? 90 : 10}%`,
+        backgroundColor: `hsl(197, 70%, ${lightness}%`,
+        color: `hsl(197, 70%, ${lightness <= 50 ? 90 : 10}%`,
       }}
     >
       {value}

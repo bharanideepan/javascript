@@ -17,10 +17,8 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "grid",
-    backgroundColor: "hsl(182, 25%, 50%)",
-    gap: "2vmin",
+    backgroundColor: theme.palette.secondary.light,
     borderRadius: "1vmin",
-    padding: "2vmin",
     position: "relative",
   },
 }));
@@ -96,6 +94,8 @@ const GridView = () => {
       style={{
         gridTemplateColumns: `repeat(${settings.gridSize}, ${settings.cellSize}vmin)`,
         gridTemplateRows: `repeat(${settings.gridSize}, ${settings.cellSize}vmin)`,
+        gap: `${settings.cellGap}vmin`,
+        padding: `${settings.cellGap}vmin`,
       }}
     >
       {grid &&

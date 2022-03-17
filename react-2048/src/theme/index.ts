@@ -19,14 +19,14 @@ const themesOptions: CustomThemeOptions[] = [
     palette: {
       mode: "light",
       background: {
-        default: "#f4f6f8",
-        paper: common.white,
+        default: "#B8CDDD", // body bg
       },
       primary: {
         main: indigo[600],
       },
       secondary: {
-        main: "#5850EC",
+        main: "#0D638C", // cell bg
+        light: "#4D7391", // board bg
       },
       text: {
         primary: blueGrey[900],
@@ -39,14 +39,14 @@ const themesOptions: CustomThemeOptions[] = [
     palette: {
       mode: "dark",
       background: {
-        default: "#1c2025",
-        paper: "#282C34",
+        default: "#5D636A",
       },
       primary: {
         main: "#8a85ff",
       },
       secondary: {
-        main: "#8a85ff",
+        main: "#000000",
+        light: "#212327"
       },
       text: {
         primary: "#e6e5e8",
