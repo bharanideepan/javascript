@@ -10,9 +10,9 @@ interface Settings {
 }
 
 const DEFAULT_SETTINGS: Settings = {
-  theme: THEMES.LIGHT,
+  theme: THEMES.DARK,
   gridSize: 4,
-  cellSize: 15,
+  cellSize: 18,
   cellGap: 1.5,
 };
 

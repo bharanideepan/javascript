@@ -1,7 +1,10 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
-import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { makeStyles, useTheme } from "@mui/styles";
+import { Box, IconButton } from "@mui/material";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 import useSettings from "../../hooks/useSettings";
 import { THEMES } from "../../constants";
@@ -35,15 +38,19 @@ const GameContainer = () => {
   };
   return (
     <div className={classes.root}>
-      <div>
-        <Button variant="contained" color="primary" onClick={handleToggleTheme}>
-          Toggle Theme
-        </Button>
-        <Button variant="contained" color="primary" onClick={handleRestart}>
-          Restart
-        </Button>
+      <Box>
+        <IconButton onClick={handleToggleTheme}>
+          {settings.theme === THEMES.LIGHT ? (
+            <LightModeIcon />
+          ) : (
+            <DarkModeIcon />
+          )}
+        </IconButton>
+        <IconButton onClick={handleRestart}>
+          <RestartAltIcon />
+        </IconButton>
         <GridView />
-      </div>
+      </Box>
     </div>
   );
 };

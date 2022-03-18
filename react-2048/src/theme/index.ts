@@ -9,6 +9,7 @@ import { THEMES } from "../constants";
 
 interface CustomThemeOptions extends ThemeOptions {
   name: string;
+  button: string;
 }
 
 const baseOptions = {};
@@ -16,41 +17,36 @@ const baseOptions = {};
 const themesOptions: CustomThemeOptions[] = [
   {
     name: THEMES.LIGHT,
+    button: '',
     palette: {
       mode: "light",
       background: {
-        default: "#B8CDDD", // body bg
+        default: "#eceff1", // body bg
       },
       primary: {
-        main: indigo[600],
+        main: '#795548',
+        light: '#795548'
       },
       secondary: {
-        main: "#0D638C", // cell bg
-        light: "#4D7391", // board bg
-      },
-      text: {
-        primary: blueGrey[900],
-        secondary: blueGrey[600],
+        main: "#608a9f", // cell bg
+        light: "#609d9f", // board bg
       },
     },
   },
   {
     name: THEMES.DARK,
+    button: '',
     palette: {
       mode: "dark",
       background: {
         default: "#5D636A",
       },
       primary: {
-        main: "#8a85ff",
+        main: "#795548",
       },
       secondary: {
         main: "#000000",
         light: "#212327"
-      },
-      text: {
-        primary: "#e6e5e8",
-        secondary: "#adb0bb",
       },
     },
   },

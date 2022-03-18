@@ -13,6 +13,7 @@ import {
   canMoveDown,
   canMoveLeft,
 } from "../../utils/Util";
+import touch from "../../utils/TouchHandler";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +59,46 @@ const GridView = () => {
     [grid, dispatch]
   );
 
+  let xDown = 0;
+  let yDown = 0;
+  const getTouches = (event: any) => {
+    return (
+      event.touches || // browser API
+      event.originalEvent.touches
+    ); // jQuery
+  };
+  const handleTouchStart = (event: any) => {
+    const firstTouch = getTouches(event)[0];
+    xDown = firstTouch.clientX;
+    yDown = firstTouch.clientY;
+  };
+  const handleTouchMove = (event: any) => {
+    if (!xDown || !yDown) {
+      return;
+    }
+    const xUp = event.touches[0].clientX;
+    const yUp = event.touches[0].clientY;
+    const xDiff = xDown - xUp;
+    const yDiff = yDown - yUp;
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+      /*most significant*/
+      if (xDiff > 0) {
+        handleInput({ key: "ArrowLeft" });
+      } else {
+        handleInput({ key: "ArrowRight" });
+      }
+    } else {
+      if (yDiff > 0) {
+        handleInput({ key: "ArrowUp" });
+      } else {
+        handleInput({ key: "ArrowDown" });
+      }
+    }
+    /* reset values */
+    xDown = 0;
+    yDown = 0;
+  };
+
   useEffect(() => {
     if (grid.cells.length === 0 && grid.tiles.length === 0) {
       dispatch(actions.createCells(settings.gridSize));
@@ -68,8 +109,12 @@ const GridView = () => {
 
   useEffect(() => {
     window.addEventListener("keydown", handleInput);
+    document.addEventListener("touchstart", handleTouchStart, false);
+    document.addEventListener("touchmove", handleTouchMove, false);
     return () => {
       window.removeEventListener("keydown", handleInput);
+      document.removeEventListener("touchstart", handleTouchStart, false);
+      document.removeEventListener("touchmove", handleTouchMove, false);
     };
   }, [grid, handleInput]);
 
