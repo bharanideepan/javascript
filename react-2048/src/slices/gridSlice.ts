@@ -10,7 +10,9 @@ import {
 const KEY = 'gameData';
 const DEFAULT = {
   cells: [],
-  tiles: []
+  tiles: [],
+  score: 0,
+  highScore: 0
 }
 const resumeGame = (): Grid => {
   let grid: Grid = DEFAULT;
@@ -38,7 +40,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     restart(state) {
-      state.grid = DEFAULT;
+      state.grid = { ...DEFAULT, highScore: state.grid.highScore };
     },
     createCells(state, action) {
       const size = action.payload;
@@ -76,11 +78,7 @@ const slice = createSlice({
       slideTiles(state.grid.tiles, cellsByRowReversed(state.grid.cells))
     },
     mergeCellTiles(state) {
-      mergeTiles(state.grid)
-      state.grid.cells.forEach(cell => {
-        const tile = state.grid.tiles.find(tile => cell.x === tile.x && cell.y === tile.y)
-        mergeCellTiles(cell, tile)
-      })
+      mergeCellTiles(state.grid)
     }
   },
 });
@@ -125,17 +123,25 @@ const slideTiles = (tiles: Tile[], cells: Cell[][]) => {
   });
 }
 
-const mergeCellTiles = (cell: Cell, tile?: Tile) => {
-  if (cell.tile && cell.mergeTile && cell.tile.value && cell.mergeTile.value) {
-    cell.tile.value =
-      cell.tile.value + cell.mergeTile.value;
-    delete cell.mergeTile;
-  }
-  if (tile && cell.tile) {
-    tile.value = cell.tile.value
-  }
+const mergeCellTiles = (grid: Grid) => {
+  grid.tiles = grid.tiles.filter(tile => !tile.isMergeTile)
+  grid.cells.forEach(cell => {
+    const tile = grid.tiles.find(tile => cell.x === tile.x && cell.y === tile.y)
+    if (cell.tile && cell.mergeTile && cell.tile.value && cell.mergeTile.value) {
+      cell.tile.value =
+        cell.tile.value + cell.mergeTile.value;
+      setScore(grid, cell.tile.value);
+      delete cell.mergeTile;
+    }
+    if (tile && cell.tile) {
+      tile.value = cell.tile.value
+    }
+  })
 }
 
-const mergeTiles = (grid: Grid) => {
-  grid.tiles = grid.tiles.filter(tile => !tile.isMergeTile)
+const setScore = (grid: Grid, newScore: number) => {
+  grid.score = grid.score + newScore
+  if (grid.highScore <= grid.score) {
+    grid.highScore = grid.score
+  }
 }

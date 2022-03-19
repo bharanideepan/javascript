@@ -24,13 +24,15 @@ const themesOptions: CustomThemeOptions[] = [
         default: "#eceff1", // body bg
       },
       primary: {
-        main: '#795548',
-        light: '#795548'
+        main: '#dfe8ec',
       },
       secondary: {
         main: "#608a9f", // cell bg
         light: "#609d9f", // board bg
       },
+      text: {
+        // primary: '#000000'
+      }
     },
   },
   {
@@ -42,7 +44,7 @@ const themesOptions: CustomThemeOptions[] = [
         default: "#5D636A",
       },
       primary: {
-        main: "#795548",
+        main: "#404040",
       },
       secondary: {
         main: "#000000",

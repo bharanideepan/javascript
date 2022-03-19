@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@mui/styles";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +13,9 @@ import {
   canMoveDown,
   canMoveLeft,
 } from "../../utils/Util";
+import Modal from "../Modal";
 import touch from "../../utils/TouchHandler";
+import { List, ListItem, Button, Box } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,15 +23,24 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.light,
     borderRadius: "1vmin",
     position: "relative",
+    width: "fit-content",
   },
 }));
 
 const GridView = () => {
   const classes = useStyles();
   const { settings } = useSettings();
-
+  const [modalOpen, setModalOpen] = useState(false);
   const { grid } = useSelector((state: RootState) => state.grid);
   const dispatch = useDispatch();
+
+  const showModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+    dispatch(actions.restart());
+  };
 
   const handleInput = useCallback(
     (e: any) => {
@@ -127,8 +138,7 @@ const GridView = () => {
       !canMoveLeft(grid.cells) &&
       !canMoveRight(grid.cells)
     ) {
-      console.log("you lost");
-      alert("You lost");
+      showModal();
       return;
     }
   }, [grid]);
@@ -153,6 +163,18 @@ const GridView = () => {
             <TileView key={tile.key} x={tile.x} y={tile.y} value={tile.value} />
           );
         })}
+      <Modal
+        open={modalOpen}
+        header="Game over"
+        onClose={closeModal}
+        hideClose={true}
+      >
+        <Box textAlign="center">
+          <Button variant="contained" onClick={closeModal}>
+            New game
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 };
