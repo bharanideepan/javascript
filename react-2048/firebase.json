@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "game-2048-bharani",
+    "site": "bharani2048",
     "public": "build",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
