@@ -71,10 +71,10 @@ const GridView = () => {
         default:
           return;
       }
-      dispatch(actions.mergeCellTiles());
+      dispatch(actions.mergeCellTiles(settings.gridSize));
       dispatch(actions.addTile(1));
     },
-    [grid, dispatch]
+    [settings.gridSize, grid, dispatch]
   );
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { THEMES } from "../constants";
 
 interface Settings {
   theme: string;
-  gridSize: number;
+  gridSize: 2 | 3 | 4;
   cellSize: number;
   cellGap: number;
 }
@@ -12,7 +12,7 @@ interface Settings {
 const DEFAULT_SETTINGS: Settings = {
   theme: THEMES.DARK,
   gridSize: 4,
-  cellSize: 18,
+  cellSize: 16,
   cellGap: 1.5,
 };
 
