@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { makeStyles } from "@mui/styles";
-
 import { useSelector, useDispatch } from "react-redux";
+import { useSwipeable } from "react-swipeable";
+import { makeStyles } from "@mui/styles";
+import { Button, Box } from "@mui/material";
 import useSettings from "../../hooks/useSettings";
 import CellView from "./CellView";
 import TileView from "./TileView";
@@ -14,7 +15,6 @@ import {
   canMoveLeft,
 } from "../../utils/Util";
 import Modal from "../Modal";
-import { Button, Box } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,10 +30,16 @@ const GridView = () => {
   const classes = useStyles();
   const { settings } = useSettings();
   const [modalOpen, setModalOpen] = useState(false);
-  const [xDown, setXDown] = useState(0);
-  const [yDown, setYDown] = useState(0);
   const { grid } = useSelector((state: RootState) => state.grid);
   const dispatch = useDispatch();
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleInput({ key: "ArrowLeft" }),
+    onSwipedRight: () => handleInput({ key: "ArrowRight" }),
+    onSwipedUp: () => handleInput({ key: "ArrowUp" }),
+    onSwipedDown: () => handleInput({ key: "ArrowDown" }),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
 
   const showModal = () => {
     setModalOpen(true);
@@ -71,50 +77,6 @@ const GridView = () => {
     [grid, dispatch]
   );
 
-  const getTouches = useCallback((event: any) => {
-    return (
-      event.touches || // browser API
-      event.originalEvent.touches
-    ); // jQuery
-  }, []);
-  const handleTouchStart = useCallback(
-    (event: any) => {
-      const firstTouch = getTouches(event)[0];
-      setXDown(firstTouch.clientX);
-      setYDown(firstTouch.clientY);
-    },
-    [getTouches, setXDown, setYDown]
-  );
-  const handleTouchMove = useCallback(
-    (event: any) => {
-      if (!xDown || !yDown) {
-        return;
-      }
-      const xUp = event.touches[0].clientX;
-      const yUp = event.touches[0].clientY;
-      const xDiff = xDown - xUp;
-      const yDiff = yDown - yUp;
-      if (Math.abs(xDiff) > Math.abs(yDiff)) {
-        /*most significant*/
-        if (xDiff > 0) {
-          handleInput({ key: "ArrowLeft" });
-        } else {
-          handleInput({ key: "ArrowRight" });
-        }
-      } else {
-        if (yDiff > 0) {
-          handleInput({ key: "ArrowUp" });
-        } else {
-          handleInput({ key: "ArrowDown" });
-        }
-      }
-      /* reset values */
-      setXDown(0);
-      setYDown(0);
-    },
-    [handleInput, xDown, yDown, setXDown, setYDown]
-  );
-
   useEffect(() => {
     if (grid.cells.length === 0 && grid.tiles.length === 0) {
       dispatch(actions.createCells(settings.gridSize));
@@ -125,14 +87,10 @@ const GridView = () => {
 
   useEffect(() => {
     window.addEventListener("keydown", handleInput);
-    document.addEventListener("touchstart", handleTouchStart, false);
-    document.addEventListener("touchmove", handleTouchMove, false);
     return () => {
       window.removeEventListener("keydown", handleInput);
-      document.removeEventListener("touchstart", handleTouchStart, false);
-      document.removeEventListener("touchmove", handleTouchMove, false);
     };
-  }, [grid, handleInput, handleTouchStart, handleTouchMove]);
+  }, [grid, handleInput]);
 
   useEffect(() => {
     if (
@@ -157,6 +115,7 @@ const GridView = () => {
         gap: `${settings.cellGap}vmin`,
         padding: `${settings.cellGap}vmin`,
       }}
+      {...handlers}
     >
       {grid &&
         grid.cells.map((cell, i) => {
