@@ -4,7 +4,6 @@ import {
   responsiveFontSizes,
   ThemeOptions,
 } from "@mui/material/styles";
-import { blueGrey, indigo, common } from "@mui/material/colors";
 import { THEMES } from "../constants";
 
 interface CustomThemeOptions extends ThemeOptions {

@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { ThemeProvider } from "@mui/styles";
 
 import useSettings from "./hooks/useSettings";

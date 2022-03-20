@@ -14,8 +14,7 @@ import {
   canMoveLeft,
 } from "../../utils/Util";
 import Modal from "../Modal";
-import touch from "../../utils/TouchHandler";
-import { List, ListItem, Button, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +30,8 @@ const GridView = () => {
   const classes = useStyles();
   const { settings } = useSettings();
   const [modalOpen, setModalOpen] = useState(false);
+  const [xDown, setXDown] = useState(0);
+  const [yDown, setYDown] = useState(0);
   const { grid } = useSelector((state: RootState) => state.grid);
   const dispatch = useDispatch();
 
@@ -70,45 +71,49 @@ const GridView = () => {
     [grid, dispatch]
   );
 
-  let xDown = 0;
-  let yDown = 0;
-  const getTouches = (event: any) => {
+  const getTouches = useCallback((event: any) => {
     return (
       event.touches || // browser API
       event.originalEvent.touches
     ); // jQuery
-  };
-  const handleTouchStart = (event: any) => {
-    const firstTouch = getTouches(event)[0];
-    xDown = firstTouch.clientX;
-    yDown = firstTouch.clientY;
-  };
-  const handleTouchMove = (event: any) => {
-    if (!xDown || !yDown) {
-      return;
-    }
-    const xUp = event.touches[0].clientX;
-    const yUp = event.touches[0].clientY;
-    const xDiff = xDown - xUp;
-    const yDiff = yDown - yUp;
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-      /*most significant*/
-      if (xDiff > 0) {
-        handleInput({ key: "ArrowLeft" });
-      } else {
-        handleInput({ key: "ArrowRight" });
+  }, []);
+  const handleTouchStart = useCallback(
+    (event: any) => {
+      const firstTouch = getTouches(event)[0];
+      setXDown(firstTouch.clientX);
+      setYDown(firstTouch.clientY);
+    },
+    [getTouches, setXDown, setYDown]
+  );
+  const handleTouchMove = useCallback(
+    (event: any) => {
+      if (!xDown || !yDown) {
+        return;
       }
-    } else {
-      if (yDiff > 0) {
-        handleInput({ key: "ArrowUp" });
+      const xUp = event.touches[0].clientX;
+      const yUp = event.touches[0].clientY;
+      const xDiff = xDown - xUp;
+      const yDiff = yDown - yUp;
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        /*most significant*/
+        if (xDiff > 0) {
+          handleInput({ key: "ArrowLeft" });
+        } else {
+          handleInput({ key: "ArrowRight" });
+        }
       } else {
-        handleInput({ key: "ArrowDown" });
+        if (yDiff > 0) {
+          handleInput({ key: "ArrowUp" });
+        } else {
+          handleInput({ key: "ArrowDown" });
+        }
       }
-    }
-    /* reset values */
-    xDown = 0;
-    yDown = 0;
-  };
+      /* reset values */
+      setXDown(0);
+      setYDown(0);
+    },
+    [handleInput, xDown, yDown, setXDown, setYDown]
+  );
 
   useEffect(() => {
     if (grid.cells.length === 0 && grid.tiles.length === 0) {
@@ -127,7 +132,7 @@ const GridView = () => {
       document.removeEventListener("touchstart", handleTouchStart, false);
       document.removeEventListener("touchmove", handleTouchMove, false);
     };
-  }, [grid, handleInput]);
+  }, [grid, handleInput, handleTouchStart, handleTouchMove]);
 
   useEffect(() => {
     if (

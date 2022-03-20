@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@mui/styles";
-import { Box, IconButton, Typography, Dialog } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const GameContainer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const classes = useStyles();
-  const { settings, saveSettings, resetSettings } = useSettings();
+  const { settings, saveSettings } = useSettings();
   const { grid } = useSelector((state: RootState) => state.grid);
   const dispatch = useDispatch();
   const handleRestart = () => {
