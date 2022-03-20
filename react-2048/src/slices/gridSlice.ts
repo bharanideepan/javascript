@@ -32,7 +32,10 @@ const resumeGame = (): Grid => {
   try {
     const storedData = window.localStorage.getItem(KEY);
     if (storedData) {
-      grid = JSON.parse(storedData);
+      const data = JSON.parse(storedData);
+      if (data.stats) {
+        grid = data
+      }
     }
   } catch (err) {
     console.error(err);
