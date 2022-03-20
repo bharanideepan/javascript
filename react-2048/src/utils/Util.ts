@@ -17,7 +17,20 @@ export interface Grid {
   cells: Cell[],
   tiles: Tile[],
   score: number,
-  highScore: number
+  stats: {
+    2: {
+      bestScore: number,
+      bestTile: number
+    },
+    3: {
+      bestScore: number,
+      bestTile: number
+    },
+    4: {
+      bestScore: number,
+      bestTile: number
+    }
+  }
 }
 
 export const getRandomEmptyCell = (cells: Cell[]) => {

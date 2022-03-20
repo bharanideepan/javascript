@@ -8,11 +8,24 @@ import {
 } from "../utils/Util";
 
 const KEY = 'gameData';
-const DEFAULT = {
+const DEFAULT: Grid = {
   cells: [],
   tiles: [],
   score: 0,
-  highScore: 0
+  stats: {
+    2: {
+      bestScore: 0,
+      bestTile: 0
+    },
+    3: {
+      bestScore: 0,
+      bestTile: 0
+    },
+    4: {
+      bestScore: 0,
+      bestTile: 0
+    },
+  }
 }
 const resumeGame = (): Grid => {
   let grid: Grid = DEFAULT;
@@ -40,7 +53,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     restart(state) {
-      state.grid = { ...DEFAULT, highScore: state.grid.highScore };
+      state.grid = { ...DEFAULT, stats: state.grid.stats };
     },
     createCells(state, action) {
       const size = action.payload;
@@ -77,8 +90,8 @@ const slice = createSlice({
     moveRight(state) {
       slideTiles(state.grid.tiles, cellsByRowReversed(state.grid.cells))
     },
-    mergeCellTiles(state) {
-      mergeCellTiles(state.grid)
+    mergeCellTiles(state, action) {
+      mergeCellTiles(state.grid, action.payload)
     }
   },
 });
@@ -123,14 +136,14 @@ const slideTiles = (tiles: Tile[], cells: Cell[][]) => {
   });
 }
 
-const mergeCellTiles = (grid: Grid) => {
+const mergeCellTiles = (grid: Grid, size: 2 | 3 | 4) => {
   grid.tiles = grid.tiles.filter(tile => !tile.isMergeTile)
   grid.cells.forEach(cell => {
     const tile = grid.tiles.find(tile => cell.x === tile.x && cell.y === tile.y)
     if (cell.tile && cell.mergeTile && cell.tile.value && cell.mergeTile.value) {
       cell.tile.value =
         cell.tile.value + cell.mergeTile.value;
-      setScore(grid, cell.tile.value);
+      setScore(grid, cell.tile.value, size);
       delete cell.mergeTile;
     }
     if (tile && cell.tile) {
@@ -139,9 +152,12 @@ const mergeCellTiles = (grid: Grid) => {
   })
 }
 
-const setScore = (grid: Grid, newScore: number) => {
+const setScore = (grid: Grid, newScore: number, size: 2 | 3 | 4) => {
   grid.score = grid.score + newScore
-  if (grid.highScore <= grid.score) {
-    grid.highScore = grid.score
+  if (grid.stats[size].bestScore <= grid.score) {
+    grid.stats[size].bestScore = grid.score;
+  }
+  if (grid.stats[size].bestTile <= newScore) {
+    grid.stats[size].bestTile = newScore;
   }
 }
