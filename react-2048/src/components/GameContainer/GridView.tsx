@@ -113,7 +113,7 @@ const GridView = () => {
         gridTemplateColumns: `repeat(${settings.gridSize}, ${settings.cellSize}vmin)`,
         gridTemplateRows: `repeat(${settings.gridSize}, ${settings.cellSize}vmin)`,
         gap: `${settings.cellGap}vmin`,
-        padding: `${settings.cellGap}vmin`,
+        padding: `${settings.cellGap * 1.5}vmin`,
       }}
       {...handlers}
     >

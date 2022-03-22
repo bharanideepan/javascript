@@ -36,11 +36,10 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "15vmin",
     background: theme.palette.primary.main,
     padding: "0.5vmin",
-    margin: "0.5vmin",
-    border: `0.2vmin solid ${theme.palette.secondary.light}`,
-    borderRadius: "0.5vmin",
+    margin: "0.75vmin",
     textAlign: "center",
     color: theme.palette.text.primary,
+    flexGrow: 1,
     "& .label": {
       fontSize: "2vmin",
     },
@@ -108,9 +107,9 @@ const GameContainer = () => {
           >
             <IconButton onClick={handleToggleTheme}>
               {settings.theme === THEMES.LIGHT ? (
-                <LightModeIcon />
-              ) : (
                 <DarkModeIcon />
+              ) : (
+                <LightModeIcon />
               )}
             </IconButton>
             <IconButton onClick={showModal}>
@@ -167,10 +166,17 @@ const GameContainer = () => {
         onClose={closeConfirmModal}
         hideClose={true}
       >
-        <Box textAlign="center">
-          <Button variant="contained" onClick={confirmRestart}>
-            Confirm
-          </Button>
+        <Box display="flex" textAlign="center">
+          <Box mr={2}>
+            <Button variant="contained" color="error" onClick={confirmRestart}>
+              Confirm
+            </Button>
+          </Box>
+          <Box ml={2}>
+            <Button variant="contained" onClick={closeConfirmModal}>
+              Cancel
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </div>

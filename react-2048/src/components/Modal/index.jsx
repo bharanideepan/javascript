@@ -37,7 +37,7 @@ const Modal = ({ open, onClose, header, children, hideClose }) => {
             justifyContent="center"
             alignItems="center"
           >
-            <Box ml="auto">
+            <Box ml={!hideClose ? "auto" : 0}>
               <h2>{header}</h2>
             </Box>
             {!hideClose && (
