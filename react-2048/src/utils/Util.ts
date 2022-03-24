@@ -29,6 +29,10 @@ export interface Grid {
     4: {
       bestScore: number,
       bestTile: number
+    },
+    5: {
+      bestScore: number,
+      bestTile: number
     }
   }
 }

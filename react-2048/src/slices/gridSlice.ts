@@ -25,6 +25,10 @@ const DEFAULT: Grid = {
       bestScore: 0,
       bestTile: 0
     },
+    5: {
+      bestScore: 0,
+      bestTile: 0
+    },
   }
 }
 const resumeGame = (): Grid => {
@@ -35,6 +39,7 @@ const resumeGame = (): Grid => {
       const data = JSON.parse(storedData);
       if (data.stats) {
         grid = data
+        grid.stats = { ...DEFAULT.stats, ...grid.stats }
       }
     }
   } catch (err) {

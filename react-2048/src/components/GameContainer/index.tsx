@@ -128,6 +128,7 @@ const GameContainer = () => {
                 <MenuItem value={2}>2 x 2</MenuItem>
                 <MenuItem value={3}>3 x 3</MenuItem>
                 <MenuItem value={4}>4 x 4</MenuItem>
+                <MenuItem value={5}>5 x 5</MenuItem>
               </Select>
             </Box>
           </Box>
