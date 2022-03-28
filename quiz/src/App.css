@@ -1,0 +1,141 @@
+.App {
+  text-align: center;
+  background-color: #1c1c1c;
+  display: grid;
+  height: 100%;
+  padding: 95px;
+}
+
+.app-container {
+  color: #293264;
+  background-color: #f5f7fb;
+  background-image: url(/src/assets/images/bg1.svg), url(/src/assets/images/bg2.svg);
+  background-repeat: no-repeat;
+  background-position: top right, bottom left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heading {
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 700;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  margin: 7px 0 27px;
+}
+
+.btn {
+  background-color: #4d5b9e;
+  color: #f5f7fb;
+  border-radius: 15px;
+  box-shadow: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn.lg {
+  padding: 15px 28px;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.btn.md {
+  padding: 10px 20px;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.questions-container {
+  text-align: left;
+  padding: 22px 75px 32px;
+}
+
+.result {
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 600;
+}
+
+.footer {
+  display: flex;
+  margin-top: 15px;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.question-container {
+  padding: 15px;
+  border-bottom: 0.8px solid #dbdef0;
+}
+
+.question {
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.options {
+  display: flex;
+  gap: 14px;
+}
+
+.option {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 600;
+  padding: 4px 15px;
+  border: 1px solid #4d5b9e;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 50px;
+  text-align: center;
+}
+
+.option.selected {
+  background-color: #d6dbf5;
+  border: 1px solid transparent;
+}
+
+.option.incorrect {
+  background-color: #f8bcbc;
+  border: 1px solid transparent;
+  cursor: auto;
+}
+
+.option.correct {
+  background-color: #94d7a2;
+  border: 1px solid transparent;
+  cursor: auto;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+.spinner {
+  position: absolute;
+  width: 250px;
+  left: calc(50% - 125px);
+  top: calc(50% - 125px);
+  animation: App-logo-spin infinite 3s linear;
+  height: 250px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
