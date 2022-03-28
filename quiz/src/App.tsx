@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Confetti from "react-confetti";
 import "./App.css";
 import Questions from "./Questions";
 
