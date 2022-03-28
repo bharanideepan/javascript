@@ -4,8 +4,8 @@ import { THEMES } from "../constants";
 
 interface Settings {
   theme: string;
-  gridSize: 2 | 3 | 4;
-  cellSize: number;
+  gridSize: 2 | 3 | 4 | 5;
+  cellSize: 12 | 16;
   cellGap: number;
 }
 
@@ -48,6 +48,7 @@ export const SettingsProvider: React.FC<{
 
   const handleSaveSettings = (update: Settings = DEFAULT_SETTINGS) => {
     const mergedSettings = _.merge({}, currentSettings, update);
+    mergedSettings.cellSize = mergedSettings.gridSize > 4 ? 12 : 16;
     setCurrentSettings(mergedSettings);
     storeSettings(mergedSettings);
   };

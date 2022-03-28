@@ -55,10 +55,10 @@ const TileView: React.FC<{ x: number; y: number; value: number }> = ({
         width: `${settings.cellSize}vmin`,
         height: `${settings.cellSize}vmin`,
         top: `${
-          y * (settings.cellSize + settings.cellGap) + settings.cellGap
+          y * (settings.cellSize + settings.cellGap) + settings.cellGap * 1.5
         }vmin`,
         left: `${
-          x * (settings.cellSize + settings.cellGap) + settings.cellGap
+          x * (settings.cellSize + settings.cellGap) + settings.cellGap * 1.5
         }vmin`,
         backgroundColor: colors.backgroundColor,
         color: colors.color,

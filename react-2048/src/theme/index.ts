@@ -20,10 +20,10 @@ const themesOptions: CustomThemeOptions[] = [
     palette: {
       mode: "light",
       background: {
-        default: "#eceff1", // body bg
+        default: "#ffffff", // body bg   #eceff1
       },
       primary: {
-        main: '#dfe8ec',
+        main: '#C4C4C4',
       },
       secondary: {
         main: "#608a9f", // cell bg
