@@ -40,6 +40,12 @@
   font-weight: 700;
 }
 
+.btn.link {
+  background-color: transparent !important;
+  color: #4d5b9e;
+  font-size: 12px;
+}
+
 .btn.lg {
   padding: 15px 28px;
   font-size: 16px;
@@ -74,6 +80,11 @@
 .question-container {
   padding: 15px;
   border-bottom: 0.8px solid #dbdef0;
+}
+
+.questions {
+  max-height: 60vh;
+  overflow: auto;
 }
 
 .question {
@@ -129,6 +140,12 @@
   top: calc(50% - 125px);
   animation: App-logo-spin infinite 3s linear;
   height: 250px;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
 }
 
 @keyframes App-logo-spin {

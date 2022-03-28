@@ -17,14 +17,23 @@ interface QuestionModal {
   isCorrect?: boolean;
 }
 
+interface Filters {
+  amount: number;
+  category: string;
+  difficulty: string;
+  type: string;
+}
+
 const initialValue = {
   questions: [],
   result: 0,
 };
 
-const getQuestions = async () => {
+const getQuestions = async (filters: Filters) => {
   const res = await fetch(
-    "https://opentdb.com/api.php?amount=5&category=19&difficulty=easy&type=multiple"
+    `https://opentdb.com/api.php?amount=${
+      filters.amount
+    }&category=${filters.category.trim()}&difficulty=${filters.difficulty.trim()}&type=multiple`
   );
   const json = await res.json();
   return json;
@@ -78,7 +87,10 @@ const questionsReducer = (
   return state;
 };
 
-const Questions = () => {
+const Questions: React.FC<{
+  filters: Filters;
+  handleHomeClick: () => void;
+}> = ({ filters, handleHomeClick }) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [state, dispatchState] = useReducer(questionsReducer, initialValue);
@@ -102,7 +114,7 @@ const Questions = () => {
     if (submitted) return;
     async function fetchQuestions() {
       setLoading(true);
-      const res = await getQuestions();
+      const res = await getQuestions(filters);
       const questions = res.results.map(
         (question: { incorrect_answers: any; correct_answer: string }) => ({
           ...question,
@@ -122,23 +134,32 @@ const Questions = () => {
       });
     }
     fetchQuestions();
-  }, [submitted, dispatchState, setLoading]);
+  }, [filters, submitted, dispatchState, setLoading]);
   return (
     <div className="questions-container">
-      {submitted && state.result >= 4 && <Confetti />}
+      {submitted && state.result / state.questions.length >= 0.8 && (
+        <Confetti />
+      )}
       {loading && <img className="spinner" src={spinner} alt="" />}
-      {state.questions.map((question, index) => (
-        <Question
-          key={index}
-          correctAnswer={question.correct_answer}
-          incorrectAnswers={question.incorrect_answers}
-          question={question.question}
-          submitted={submitted}
-          options={question.options}
-          setSelectedOption={setSelectedOption}
-          selectedOption={question.selectedOption}
-        />
-      ))}
+      {!loading && (
+        <button className="btn link" onClick={handleHomeClick}>
+          {"< Back"}
+        </button>
+      )}
+      <div className="questions">
+        {state.questions.map((question, index) => (
+          <Question
+            key={index}
+            correctAnswer={question.correct_answer}
+            incorrectAnswers={question.incorrect_answers}
+            question={question.question}
+            submitted={submitted}
+            options={question.options}
+            setSelectedOption={setSelectedOption}
+            selectedOption={question.selectedOption}
+          />
+        ))}
+      </div>
       {!loading && (
         <div className="footer">
           {submitted && (
