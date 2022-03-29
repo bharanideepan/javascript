@@ -1,145 +1,26 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState } from "react";
 import Confetti from "react-confetti";
 import Question from "./Question";
 import spinner from "./logo.svg";
-
-interface State {
-  questions: QuestionModal[];
-  result: number;
-}
-
-interface QuestionModal {
-  question: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-  options: string[];
-  selectedOption?: string;
-  isCorrect?: boolean;
-}
-
-interface Filters {
-  amount: number;
-  category: string;
-  difficulty: string;
-  type: string;
-}
-
-const initialValue = {
-  questions: [],
-  result: 0,
-};
-
-const getQuestions = async (filters: Filters) => {
-  const res = await fetch(
-    `https://opentdb.com/api.php?amount=${
-      filters.amount
-    }&category=${filters.category.trim()}&difficulty=${filters.difficulty.trim()}&type=multiple`
-  );
-  const json = await res.json();
-  return json;
-};
-
-const shuffle = (arr: string[]) => {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-};
-
-const questionsReducer = (
-  state: State,
-  action: {
-    type: string;
-    payload: {
-      selectedQuestion?: string;
-      selectedOption?: string;
-      questions?: QuestionModal[];
-      result?: number;
-    };
-  }
-) => {
-  const {
-    selectedQuestion,
-    selectedOption,
-    questions,
-    result,
-  } = action.payload;
-  if (action.type === "SELECT_OPTION") {
-    let result = state.result;
-    const questions = state.questions.map((question) => {
-      if (question.question === selectedQuestion) {
-        result += question.correct_answer === selectedOption ? 1 : 0;
-        return { ...question, selectedOption: selectedOption };
-      }
-      return { ...question };
-    });
-    return { questions, result };
-  }
-
-  if (action.type === "LOAD_QUESTIONS" && questions) {
-    return {
-      questions: questions,
-      result: result ?? 0,
-    };
-  }
-
-  return state;
-};
+import { useQuestions } from "./hooks/useQuestions";
 
 const Questions: React.FC<{
-  filters: Filters;
   handleHomeClick: () => void;
-}> = ({ filters, handleHomeClick }) => {
+}> = ({ handleHomeClick }) => {
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [state, dispatchState] = useReducer(questionsReducer, initialValue);
+  const { loadQuestions, questions, result, loading } = useQuestions();
+  console.log("render questions component");
+
   const handleCheckAnswers = () => {
     setSubmitted(true);
   };
   const handlePlayAgain = () => {
     setSubmitted(false);
-    dispatchState({ type: "LOAD_QUESTIONS", payload: initialValue });
+    loadQuestions();
   };
-  const setSelectedOption = (
-    selectedQuestion: string,
-    selectedOption: string
-  ) => {
-    dispatchState({
-      type: "SELECT_OPTION",
-      payload: { selectedQuestion, selectedOption },
-    });
-  };
-  useEffect(() => {
-    if (submitted) return;
-    async function fetchQuestions() {
-      setLoading(true);
-      const res = await getQuestions(filters);
-      const questions = res.results.map(
-        (question: { incorrect_answers: any; correct_answer: string }) => ({
-          ...question,
-          options: shuffle([
-            ...question.incorrect_answers,
-            question.correct_answer,
-          ]),
-        })
-      );
-      setLoading(false);
-      dispatchState({
-        type: "LOAD_QUESTIONS",
-        payload: {
-          questions,
-          result: 0,
-        },
-      });
-    }
-    fetchQuestions();
-  }, [filters, submitted, dispatchState, setLoading]);
   return (
     <div className="questions-container">
-      {submitted && state.result / state.questions.length >= 0.8 && (
-        <Confetti />
-      )}
+      {submitted && result / questions.length >= 0.8 && <Confetti />}
       {loading && <img className="spinner" src={spinner} alt="" />}
       {!loading && (
         <button className="btn link" onClick={handleHomeClick}>
@@ -147,15 +28,13 @@ const Questions: React.FC<{
         </button>
       )}
       <div className="questions">
-        {state.questions.map((question, index) => (
+        {questions.map((question, index) => (
           <Question
             key={index}
             correctAnswer={question.correct_answer}
-            incorrectAnswers={question.incorrect_answers}
             question={question.question}
             submitted={submitted}
             options={question.options}
-            setSelectedOption={setSelectedOption}
             selectedOption={question.selectedOption}
           />
         ))}
@@ -164,7 +43,7 @@ const Questions: React.FC<{
         <div className="footer">
           {submitted && (
             <p className="result">
-              You scored {state.result}/{state.questions.length} correct answers
+              You scored {result}/{questions.length} correct answers
             </p>
           )}
 

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { Box, Select, MenuItem, TextField } from "@mui/material";
 import "./App.css";
 import Questions from "./Questions";
-import { Box, Select, MenuItem, TextField } from "@mui/material";
+import QuestionsProvider from "./contexts/QuestionsContext";
 
 const categories = [
   { value: " ", label: "Any Category" },
@@ -71,6 +72,12 @@ const App = () => {
       }));
     }
   };
+
+  const handleHomeClick = useCallback(() => {
+    setIsStarted(false);
+  }, [setIsStarted]);
+
+  console.log("app render");
   return (
     <div className="App">
       <div className="app-container">
@@ -79,21 +86,23 @@ const App = () => {
             <h2 className="heading">Quizzical</h2>
             <p className="description">Some description if needed</p>
             <Box mb={2} className="filters">
-              <Box width="100%">
+              <Box>
                 <TextField
                   type="number"
                   value={filters.amount}
                   onChange={handleFilterChange}
                   name="amount"
                   variant="standard"
+                  fullWidth
                 />
               </Box>
-              <Box width="100%">
+              <Box>
                 <Select
                   value={filters.difficulty}
                   onChange={handleFilterChange}
                   name="difficulty"
                   variant="standard"
+                  fullWidth
                 >
                   {difficulties.map((difficulty, index) => (
                     <MenuItem key={index} value={difficulty.value}>
@@ -102,13 +111,14 @@ const App = () => {
                   ))}
                 </Select>
               </Box>
-              <Box width="100%">
+              <Box>
                 <Select
                   value={filters.category}
                   label="Category"
                   onChange={handleFilterChange}
                   name="category"
                   variant="standard"
+                  fullWidth
                 >
                   {categories.map((category, index) => (
                     <MenuItem key={index} value={category.value}>
@@ -129,12 +139,9 @@ const App = () => {
           </div>
         )}
         {isStarted && (
-          <Questions
-            filters={filters}
-            handleHomeClick={() => {
-              setIsStarted(false);
-            }}
-          />
+          <QuestionsProvider filters={filters}>
+            <Questions handleHomeClick={handleHomeClick} />
+          </QuestionsProvider>
         )}
       </div>
     </div>

@@ -1,23 +1,15 @@
 import React from "react";
 import "./App.css";
+import { useQuestions } from "./hooks/useQuestions";
 
 const Question: React.FC<{
   question: string;
   correctAnswer: string;
-  incorrectAnswers: string[];
   submitted: boolean;
   options: string[];
   selectedOption?: string;
-  setSelectedOption: (question: string, option: string) => void;
-}> = ({
-  question,
-  correctAnswer,
-  incorrectAnswers,
-  submitted,
-  options,
-  selectedOption,
-  setSelectedOption,
-}) => {
+}> = ({ question, correctAnswer, submitted, options, selectedOption }) => {
+  const { selectOption } = useQuestions();
   return (
     <div className="question-container">
       <div className="question">{question}</div>
@@ -41,7 +33,7 @@ const Question: React.FC<{
               className={className}
               key={index}
               onClick={() => {
-                !submitted && setSelectedOption(question, option);
+                !submitted && selectOption(question, option);
               }}
             >
               {option}

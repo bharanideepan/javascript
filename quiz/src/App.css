@@ -92,6 +92,7 @@
   line-height: 18px;
   font-weight: 700;
   margin-bottom: 15px;
+  line-break: anywhere;
 }
 
 .options {
@@ -154,5 +155,16 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .App,
+  .questions-container {
+    padding: 25px;
+  }
+  .filters,
+  .options {
+    flex-direction: column;
   }
 }
